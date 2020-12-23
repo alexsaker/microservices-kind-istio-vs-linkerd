@@ -1,0 +1,68 @@
+{
+  "version": 2,
+  "projects": {
+    "articles-service": {
+      "root": "apps/articles-service",
+      "sourceRoot": "apps/articles-service/src",
+      "projectType": "application",
+      "prefix": "articles-service",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:build",
+          "outputs": [
+            "{options.outputPath}"
+          ],
+          "options": {
+            "outputPath": "dist/apps/articles-service",
+            "main": "apps/articles-service/src/main.ts",
+            "tsConfig": "apps/articles-service/tsconfig.app.json",
+            "assets": [
+              "apps/articles-service/src/assets"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/articles-service/src/environments/environment.ts",
+                  "with": "apps/articles-service/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "articles-service:build"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/articles-service/**/*.ts"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/apps/articles-service"
+          ],
+          "options": {
+            "jestConfig": "apps/articles-service/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/nest"
+  },
+  "defaultProject": "articles-service"
+}
