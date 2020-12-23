@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+  labels:
+    service: config-reader-service
+  name: config-reader-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: config-reader-service
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: 'true'
+      labels:
+        service: config-reader-service
+    spec:
+      containers:
+        - image: asaker/config-reader-service:1.0.0
+          imagePullPolicy: 'Always'
+          name: config-reader-service
+          ports:
+            - containerPort: 3001
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+            limits:
+              cpu: 100m
+              memory: 100Mi
+          volumeMounts:
+            - name: config-volume
+              mountPath: /tmp
+      restartPolicy: Always
+      serviceAccountName: 'micro-service-account'
+      volumes:
+        - name: config-volume
+          configMap:
+            name: myconf
