@@ -25,6 +25,9 @@
   "projects": {
     "articles-service": {
       "tags": []
+    },
+    "config-reader-service": {
+      "tags": []
     }
   }
 }

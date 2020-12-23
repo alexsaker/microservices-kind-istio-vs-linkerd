@@ -59,6 +59,65 @@
           }
         }
       }
+    },
+    "config-reader-service": {
+      "root": "apps/config-reader-service",
+      "sourceRoot": "apps/config-reader-service/src",
+      "projectType": "application",
+      "prefix": "config-reader-service",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:build",
+          "outputs": [
+            "{options.outputPath}"
+          ],
+          "options": {
+            "outputPath": "dist/apps/config-reader-service",
+            "main": "apps/config-reader-service/src/main.ts",
+            "tsConfig": "apps/config-reader-service/tsconfig.app.json",
+            "assets": [
+              "apps/config-reader-service/src/assets"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/config-reader-service/src/environments/environment.ts",
+                  "with": "apps/config-reader-service/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "config-reader-service:build"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/config-reader-service/**/*.ts"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/apps/config-reader-service"
+          ],
+          "options": {
+            "jestConfig": "apps/config-reader-service/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   },
   "cli": {

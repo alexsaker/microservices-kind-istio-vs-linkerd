@@ -1,0 +1,34 @@
+version: '3.9'
+services:
+  articles-service:
+    build:
+      dockerfile: Dockerfile
+      context: .
+      args:
+        APP: 'articles-service'
+        PORT: 3000
+    container_name: 'articles-service'
+    ports:
+      - '3000:3000'
+    links:
+      - 'mongo'
+    depends_on:
+      - 'mongo'
+    environment:
+      - 'MONGO_DB_URI=mongodb://mongo/test'
+
+  config-reader-service:
+    build:
+      dockerfile: Dockerfile
+      context: .
+      args:
+        APP: 'config-reader-service'
+        PORT: 3001
+    container_name: 'config-reader-service'
+    ports:
+      - '3001:3001'
+  mongo:
+    image: 'mongo:latest'
+    container_name: 'mongo-database'
+    ports:
+      - '27017:27017'
