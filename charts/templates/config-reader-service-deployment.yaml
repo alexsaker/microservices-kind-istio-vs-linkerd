@@ -3,20 +3,22 @@ kind: Deployment
 metadata:
   annotations:
   labels:
-    service: config-reader-service
+    app: config-reader-service
+    version: v1
   name: config-reader-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      service: config-reader-service
-  strategy: {}
+      app: config-reader-service
+      version: v1
   template:
     metadata:
       annotations:
         sidecar.istio.io/inject: 'true'
       labels:
-        service: config-reader-service
+        app: config-reader-service
+        version: v1
     spec:
       containers:
         - image: asaker/config-reader-service:1.0.0

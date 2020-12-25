@@ -3,6 +3,7 @@ kind: Service
 metadata:
   annotations:
   labels:
+    app: config-reader-service
     service: config-reader-service
   name: config-reader-service
 spec:
@@ -11,4 +12,4 @@ spec:
       port: 3001
       targetPort: 3001
   selector:
-    service: config-reader-service
+    app: config-reader-service

@@ -1,22 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
   labels:
-    service: articles-service
+    app: articles-service
+    version: '1.0.0'
   name: articles-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      service: articles-service
+      app: articles-service
+      version: v1
   template:
     metadata:
       annotations:
         sidecar.istio.io/inject: 'true'
       labels:
-        service: articles-service
+        app: articles-service
+        version: v1
     spec:
+      serviceAccountName: micro-service-account
       containers:
         - name: articles-service
           image: asaker/articles-service:1.0.0
@@ -41,5 +44,4 @@ spec:
             periodSeconds: 3
             failureThreshold: 2
       restartPolicy: Always
-      serviceAccountName: 'micro-service-account'
       volumes: null
