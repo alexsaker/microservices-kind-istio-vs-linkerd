@@ -20,6 +20,11 @@ spec:
         app: config-reader-service
         version: v1
     spec:
+      serviceAccountName: 'micro-service-account'
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 3000
+        fsGroup: 2000
       containers:
         - image: asaker/config-reader-service:1.0.0
           imagePullPolicy: 'Always'
@@ -36,8 +41,9 @@ spec:
           volumeMounts:
             - name: config-volume
               mountPath: /tmp
+          securityContext:
+            allowPrivilegeEscalation: false
       restartPolicy: Always
-      serviceAccountName: 'micro-service-account'
       volumes:
         - name: config-volume
           configMap:

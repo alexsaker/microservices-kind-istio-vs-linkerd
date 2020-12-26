@@ -6,7 +6,7 @@ metadata:
     version: '1.0.0'
   name: articles-service
 spec:
-  replicas: 1
+  replicas: 5
   selector:
     matchLabels:
       app: articles-service
@@ -20,6 +20,10 @@ spec:
         version: v1
     spec:
       serviceAccountName: micro-service-account
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 3000
+        fsGroup: 2000
       containers:
         - name: articles-service
           image: asaker/articles-service:1.0.0
@@ -43,5 +47,6 @@ spec:
             initialDelaySeconds: 3
             periodSeconds: 3
             failureThreshold: 2
+          securityContext:
+              allowPrivilegeEscalation: false
       restartPolicy: Always
-      volumes: null
