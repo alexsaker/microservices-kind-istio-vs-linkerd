@@ -56,18 +56,20 @@ curl -s http://$INGRESS_HOST:$INGRESS_PORT/articles | jq
 curl -s http://$INGRESS_HOST:$INGRESS_PORT/config | jq
 ```
 
-## Visualize your cluster with Kiali
+## Visualize your cluster with Kiali and Prometheus
 
-You will first need to have side cars applied to your pods and deplyments using the following annotation:
+You will first need to have side cars applied to your pods and deployments using the following annotation:
 sidecar.istio.io/inject: 'true'
 
 ```bash
+# Installation of Prometheus
+kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.8/samples/addons/prometheus.yaml
+
+# Installation of Kiali
 helm install \
 --namespace istio-system \
 --set auth.strategy="anonymous" \
---repo https://kiali.org/helm-charts \
-kiali-server \
-kiali-server
+--repo https://kiali.org/helm-charts kiali-server kiali-server
 
 istioctl dashboard kiali
 ```
