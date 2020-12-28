@@ -1,4 +1,4 @@
-# K8S
+# ISTIO
 
 ## Pre requisites
 
@@ -32,7 +32,7 @@ kubectl label namespace default istio-injection=enabled
 kubectl label namespace demo istio-injection=enabled
 kubectl get namespace -L istio-injection
 
-kubectl apply -f charts/templates -n demo
+kubectl apply -f charts/istio-soltution/templates -n demo
 ```
 
 ## And check your results

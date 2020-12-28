@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: articles-service
+    version: '1.0.0'
+  name: articles-service
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: articles-service
+      version: v1
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: 'true'
+      labels:
+        app: articles-service
+        version: v1
+    spec:
+      serviceAccountName: micro-service-account
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 3000
+        fsGroup: 2000
+      containers:
+        - name: articles-service
+          image: asaker/articles-service:1.0.0
+          env:
+            - name: MONGO_DB_URI
+              value: mongodb://mongo/test
+          imagePullPolicy: 'Always'
+          ports:
+            - containerPort: 3000
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+            limits:
+              cpu: 100m
+              memory: 100Mi
+          livenessProbe:
+            httpGet:
+              path: /api
+              port: 3000
+            initialDelaySeconds: 3
+            periodSeconds: 3
+            failureThreshold: 2
+          securityContext:
+              allowPrivilegeEscalation: false
+      restartPolicy: Always
